@@ -1,5 +1,24 @@
 # COSI 217b - NLP Systems
 
+
+Haochen Lin
+
+This is homework assignment base on the forked repository.
+
+New function was added in order fullfill the requirement.
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
 Assignments:
 
 - [Assignment 1 - FastAPI, Flask and Streamlit](assignments/a1/README.md)
