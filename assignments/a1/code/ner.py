@@ -37,6 +37,19 @@ class SpacyDocument:
             buffer.write(char)
         markup = buffer.getvalue()
         return '<markup>%s</markup>' % markup
+    
+    #Add dependency parse
+    def get_dependency_parse(self):
+        
+        deps = []
+        for token in self.doc:
+            deps.append({
+                "text": token.text,
+                "dep": token.dep_, 
+                "head_text": token.head.text, 
+                "head_pos": token.head.pos_, 
+            })
+        return deps
 
 
 if __name__ == '__main__':

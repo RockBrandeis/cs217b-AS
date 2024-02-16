@@ -31,13 +31,17 @@ def index(pretty: bool = False):
 
 
 @app.post('/')
-def process(item: Item, pretty: bool = False):
+@app.post("/ner")
+def perform_ner(item: Item):
     doc = ner.SpacyDocument(item.text)
-    answer = {"input": item.text, "output": doc.get_entities()}
-    if pretty:
-        answer = prettify(answer)
-    return answer   
+    entities = doc.get_entities()
+    return {"named entities": entities}
 
+@app.post("/dep")
+def perform_dependency_parsing(item: Item):
+    doc = ner.SpacyDocument(item.text)
+    dependencies = doc.get_dependency_parse()
+    return {"dependencies": dependencies}
 
 def prettify(result: dict):
     json_str = json.dumps(result, indent=2)
