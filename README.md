@@ -2,15 +2,14 @@
 
 
 Haochen Lin
+haochenlin@brandeis.edu
 
 This is a homework assignment repository base on the forked sample repository.
-
-New function was added in order fullfill the requirement of assignment.
-
+New function was added in order fullfill the requirement of assignment while redundant files and folders are removed
 Navigate to asssigments/a1/code where the program is running.
 
 ```bash
-$ cd assignments/a1/code
+$ cd assignment1
 ```
 
 Before entering the program, make sure you complete the Installation guide.

@@ -78,23 +78,23 @@ elif Myview == "Dependencies":
     counter = Counter(tokens)
     words = list(sorted(counter.most_common(30)))
 
-    st.markdown(f'Total number of tokens: {len(tokens)}<br/>'
-                f'Total number of types: {len(counter)}', unsafe_allow_html=True)
     
     #Revise the dependencies data so it can be printed as the sample shows
     def dependency_graph(dependency_parse):
         dot = Digraph()
-    
+        
+        
         nodes = {}
         for i, dep in enumerate(dependency_parse):
             node_label = f"{dep['text']}_{i}"
             nodes[dep['text'], i] = node_label
-            dot.node(node_label, f"{dep['text']} ({dep['dep']})")
+            dot.node(node_label, f"{dep['text']}")
             
 
         for i, dep in enumerate(dependency_parse):
             child_label = nodes[dep['text'], i]
 
+            #Add root edge if the node is root node
             if dep['dep'] == 'ROOT':
                 dot.edge(child_label, child_label, label="root")
             else:
