@@ -28,7 +28,7 @@ example = (
 
 example2 = ("Sebastian Thrun worked at Google in 2007.")
 
-
+#Split two views
 Myview = st.sidebar.radio("Select View", ["Entity", "Dependencies"])
 
 #View for Entity
@@ -83,14 +83,14 @@ elif Myview == "Dependencies":
     def dependency_graph(dependency_parse):
         dot = Digraph()
         
-        
+        #Create nodes based on dependencies dict
         nodes = {}
         for i, dep in enumerate(dependency_parse):
             node_label = f"{dep['text']}_{i}"
             nodes[dep['text'], i] = node_label
             dot.node(node_label, f"{dep['text']}")
             
-
+        #Create edges based on dependencies dict
         for i, dep in enumerate(dependency_parse):
             child_label = nodes[dep['text'], i]
 

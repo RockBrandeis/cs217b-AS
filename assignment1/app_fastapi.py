@@ -7,7 +7,7 @@ $ curl -X POST -H 'accept: application/json' -H 'Content-Type: application/json'
 """
 
 import json
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response,Request
 from pydantic import BaseModel
 import ner
 
@@ -38,7 +38,7 @@ def perform_ner(item: Item):
     return {"named entities": entities}
 
 @app.post("/dep")
-def perform_dependency_parsing(item: Item):
+def perform_dep(item: Item):
     doc = ner.SpacyDocument(item.text)
     dependencies = doc.get_dependency_parse()
     return {"dependencies": dependencies}
