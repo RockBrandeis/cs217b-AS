@@ -7,7 +7,7 @@ $ curl -X POST -H 'accept: application/json' -H 'Content-Type: application/json'
 """
 
 import json
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response,Request
 from pydantic import BaseModel
 import ner
 

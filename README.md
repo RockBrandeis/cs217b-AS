@@ -5,6 +5,7 @@ haochenlin@brandeis.edu
 
 This is a homework assignment repository base on the forked sample repository.
 New function was added in order fullfill the requirement of assignment while redundant files and folders are removed.(databases folder was saved for assignment2)
+
 Navigate to asssigment1 where the program is running.
 
 ```bash
