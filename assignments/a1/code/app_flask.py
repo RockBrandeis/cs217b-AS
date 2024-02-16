@@ -21,6 +21,7 @@ def index():
     else:
         text = request.form['text']
         doc = ner.SpacyDocument(text)
+        
         markup = doc.get_entities_with_markup()
         markup_paragraphed = ''
         for line in markup.split('\n'):
@@ -28,7 +29,14 @@ def index():
                 markup_paragraphed += '<p/>\n'
             else:
                 markup_paragraphed += line
-        return render_template('result.html', markup=markup_paragraphed)
+
+        #dependecies added here, check the dependency_parse function under ner.py
+        dependencies = doc.get_dependency_parse()
+        dependency_str = ""
+        for dep in dependencies:
+            dependency_str += f"{dep['head_text']} {dep['dep']} {dep['text']}<br>\n"
+
+        return render_template('result.html', markup=markup_paragraphed, dependencies=dependency_str, text=text )
 
 # alternative where we use two resources
 
@@ -47,7 +55,14 @@ def index_post():
             markup_paragraphed += '<p/>\n'
         else:
             markup_paragraphed += line
-    return render_template('result2.html', markup=markup_paragraphed)
+            
+    #dependecies added here, check the dependency_parse function under ner.py
+    dependencies = doc.get_dependency_parse()
+    dependency_str = ""
+    for dep in dependencies:
+        dependency_str += f"{dep['head_text']} {dep['dep']} {dep['text']}<br>\n"
+
+    return render_template('result2.html', markup=markup_paragraphed, dependencies=dependency_str, text=text )
 
 
 if __name__ == '__main__':

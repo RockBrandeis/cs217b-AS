@@ -3,35 +3,25 @@
 
 Haochen Lin
 
-This is homework assignment base on the forked repository.
+This is a homework assignment repository base on the forked sample repository.
 
-New function was added in order fullfill the requirement.
+New function was added in order fullfill the requirement of assignment.
 
+Navigate to asssigments/a1/code where the program is running.
 
+```bash
+$ cd assignments/a1/code
+```
 
-
-
-
-
-
-
-
+Before entering the program, make sure you complete the Installation guide.
 
 ------------------------------------------------------------------------
 
-Assignments:
+Installation & dependency requirements Guide:
 
-- [Assignment 1 - FastAPI, Flask and Streamlit](assignments/a1/README.md)
+- Make sure you have Python 3.8 installed 
 
-Code examples for CS217B.
-
-- Mini tutorial on [virtual environments](environments/python-venv.md)
-- [Flask examples](web-services/flask/README.md)
-- [Flask examples with a database backend](databases/alchemy/README.md)
-- [Python code examples](python/examples)
-- [Notes on Raymond Hettinger's pep8 talk](python/pep8-and-beyond/)
-
-Requirements if you want to run all code in here:
+- Require packges if you want to run all code in here:
 
 ```bash
 $ pip install jupyter
@@ -41,3 +31,7 @@ $ pip install flask flask-restful flask-sqlalchemy
 $ pip install streamlit graphviz
 $ pip install mypy
 ```
+
+------------------------------------------------------------------------
+
+You will see more instruction on the README.md under assignments/a1/code folder
