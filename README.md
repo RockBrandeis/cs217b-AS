@@ -1,12 +1,11 @@
-# COSI 217b - NLP Systems
-
+# COSI 217b - NLP Systems Assignments
 
 Haochen Lin
 haochenlin@brandeis.edu
 
 This is a homework assignment repository base on the forked sample repository.
 New function was added in order fullfill the requirement of assignment while redundant files and folders are removed
-Navigate to asssigments/a1/code where the program is running.
+Navigate to asssigment1 where the program is running.
 
 ```bash
 $ cd assignment1
@@ -14,13 +13,12 @@ $ cd assignment1
 
 Before entering the program, make sure you complete the Installation guide.
 
-------------------------------------------------------------------------
 
-Installation & dependency requirements Guide:
+# Installation & dependency requirements Guide:
 
-- Make sure you have Python 3.8 installed 
+- Make sure you have Python 3.8(or above) installed 
 
-- Require packges if you want to run all code in here:
+- Require packges:
 
 ```bash
 $ pip install jupyter
@@ -31,6 +29,23 @@ $ pip install streamlit graphviz
 $ pip install mypy
 ```
 
+
+# Create a virtual environment in the current directory
+
+For those we're not using Github codespace as virtual environment, you can manually create one(Recommended but optional)
+```bash
+$ python3 -m venv venv
+```
+On Windows
+```bash
+$ .\venv\Scripts\activate
+```
+On macOS and Linux
+```bash
+$ source venv/bin/activate
+```
+
+
 ------------------------------------------------------------------------
 
-You will see more instruction on the README.md under assignments/a1/code folder
+You will see more instruction on the README.md under assignment1 folder
