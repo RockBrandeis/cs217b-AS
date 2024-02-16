@@ -28,7 +28,7 @@ example = (
 
 example2 = ("Sebastian Thrun worked at Google in 2007.")
 
-
+#Split two views
 Myview = st.sidebar.radio("Select View", ["Entity", "Dependencies"])
 
 #View for Entity
