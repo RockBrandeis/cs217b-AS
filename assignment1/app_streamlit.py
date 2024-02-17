@@ -81,32 +81,33 @@ elif Myview == "Dependencies":
     
     #Revise the dependencies data so it can be printed as the sample shows
     def dependency_graph(dependency_parse):
-        dot = Digraph()
+        graph = Digraph()
         
         #Create nodes based on dependencies dict
         nodes = {}
         for i, dep in enumerate(dependency_parse):
             node_label = f"{dep['text']}_{i}"
             nodes[dep['text'], i] = node_label
-            dot.node(node_label, f"{dep['text']}")
+            graph.node(node_label, f"{dep['text']}")
             
         #Create edges based on dependencies dict
         for i, dep in enumerate(dependency_parse):
-            child_label = nodes[dep['text'], i]
+            current_node = nodes[dep['text'], i]
 
             #Add root edge if the node is root node
             if dep['dep'] == 'ROOT':
-                dot.edge(child_label, child_label, label="root")
+                graph.edge(current_node, current_node, label="root")
             else:
                 for j, head in enumerate(dependency_parse):
+                    #Check whether it is connected
                     if dep['head_text'] == head['text']:
-                        head_label = nodes[head['text'], j]
-                        dot.edge(head_label, child_label, label=dep['dep'])
+                        head_node = nodes[head['text'], j]
+                        graph.edge(head_node, current_node, label=dep['dep'])
                         break
         
-        return dot
+        return graph
 
-    dot = dependency_graph(dependencies)
+    tree = dependency_graph(dependencies)
 
    
     #split to two tabs
@@ -115,7 +116,7 @@ elif Myview == "Dependencies":
     with tab1:
         st.table(dependencies)
     with tab2:
-        st.graphviz_chart(dot.source)
+        st.graphviz_chart(tree.source)
         
     
 
