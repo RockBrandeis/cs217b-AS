@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 
 import ner
 
@@ -11,6 +12,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+
+#Three table was made, but User table deosn't contain any important information, it is reserved for potential future use.
 
 class User(db.Model):
 
@@ -29,9 +32,15 @@ class User(db.Model):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    entity_name = db.Column(db.String(50), nullable=False)
+    entity_name = db.Column(db.String(50), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+
+class Dep(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    dependencies = db.Column(db.String(255), nullable=True)
+    post_name = db.Column(db.String(50), db.ForeignKey('post.entity_name'), nullable=False)
+    
 
 
 		
@@ -43,42 +52,62 @@ def index():
         if request.method == 'GET':
             return render_template('form.html', input=open('input.txt').read())
         else:
-            text = request.form['text']
-            doc = ner.SpacyDocument(text)
+            docs = request.form['text']
+            doc = ner.SpacyDocument(docs)
             
             markup = doc.get_entities()
-            
-
-            #dependecies added here, check the dependency_parse function under ner.py
-            dependencies = doc.get_dependency_parse()
-            dependency_str = ""
-            for dep in dependencies:
-                dependency_str += f"{dep['head_text']} {dep['dep']} {dep['text']} <br>\n"
-
+                        
             entities = doc.get_entities()
-
-            
-
             entity_names = [entity[3] for entity in entities]
 
-            for name in entity_names:
-                new_entity = Post(entity_name=name, user_id=1)
-                db.session.add(new_entity)
-            
-            db.session.commit()
-    
+            try:
 
+                for name in entity_names:
+                    new_entity = Post(entity_name=name, user_id=1)
+                    db.session.add(new_entity)
+                
+                db.session.commit()
+
+            except IntegrityError:
+                db.session.rollback()          
+
+            dependencies = doc.get_dependency_parse()
+            dependency_list = []
+
+            # Check dependencies and match them with correponding entities.
+            for dependency_parse in dependencies:
+                text = dependency_parse['text']
+                
+                matching_posts = Post.query.filter(Post.entity_name.contains(text)).all()
+                
+                for post in matching_posts:
+                    
+                    if text in post.entity_name.split():
+
+                            dependency_str = f"{dependency_parse['head_text']} {dependency_parse['dep']} {dependency_parse['text']}"
+                            dependency_list.append(dependency_str)
+                            try:
+                        
+                                new_dep = Dep(dependencies=dependency_str, post_name=post.entity_name)
+                                db.session.add(new_dep)
+                                db.session.commit()
+
+                            except IntegrityError:
+                                db.session.rollback()
+
+                
+            
+            
             
 
-            
-
-            return render_template('result.html', markup=entity_names, dependencies=dependency_str, text=text )
+            return render_template('result.html', markup=entity_names, dependencies=dependency_list, text=docs )
     
 
 @app.route('/database')
 def show_database():
+    deps = Dep.query.all()
     posts = Post.query.all()
-    return render_template('database.html', posts=posts)
+    return render_template('database.html', deps=deps, posts=posts)
 
 
 
