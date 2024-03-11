@@ -1,6 +1,8 @@
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 
+import ner
+
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'fc3bb2a43ff1103895a4ee315ee27740'
@@ -27,12 +29,13 @@ class User(db.Model):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.Text, nullable=False)
+    entity_name = db.Column(db.String(50), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    def __repr__(self):
-        return f"Post(title={self.title} content='{self.content}')"
+
+
+		
+		
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -43,22 +46,41 @@ def index():
             text = request.form['text']
             doc = ner.SpacyDocument(text)
             
-            markup = doc.get_entities_with_markup()
-            markup_paragraphed = ''
-            for line in markup.split('\n'):
-                if line.strip() == '':
-                    markup_paragraphed += '<p/>\n'
-                else:
-                    markup_paragraphed += line
+            markup = doc.get_entities()
+            
 
             #dependecies added here, check the dependency_parse function under ner.py
             dependencies = doc.get_dependency_parse()
             dependency_str = ""
             for dep in dependencies:
-                dependency_str += f"{dep['head_text']} {dep['dep']} {dep['text']}<br>\n"
+                dependency_str += f"{dep['head_text']} {dep['dep']} {dep['text']} <br>\n"
 
-            return render_template('result.html', markup=markup_paragraphed, dependencies=dependency_str, text=text )
+            entities = doc.get_entities()
+
+            
+
+            entity_names = [entity[3] for entity in entities]
+
+            for name in entity_names:
+                new_entity = Post(entity_name=name, user_id=1)
+                db.session.add(new_entity)
+            
+            db.session.commit()
     
+
+            
+
+            
+
+            return render_template('result.html', markup=entity_names, dependencies=dependency_str, text=text )
+    
+
+@app.route('/database')
+def show_database():
+    posts = Post.query.all()
+    return render_template('database.html', posts=posts)
+
+
 
 
 if __name__ == '__main__':

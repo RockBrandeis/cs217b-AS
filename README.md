@@ -22,6 +22,8 @@ Before entering the program, make sure you complete the Installation guide.
 - Require packges:
 
 ```bash
+$ pip install Fastapi
+$ pip install uvicorn
 $ pip install jupyter
 $ pip install spacy
 $ python -m spacy download en_core_web_sm
