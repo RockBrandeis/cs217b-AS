@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, jsonify, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
@@ -18,8 +18,6 @@ db = SQLAlchemy(app)
 class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def __repr__(self):
@@ -55,11 +53,11 @@ def index():
             docs = request.form['text']
             doc = ner.SpacyDocument(docs)
             
-            markup = doc.get_entities()
                         
             entities = doc.get_entities()
             entity_names = [entity[3] for entity in entities]
 
+            #Enter new entites
             try:
 
                 for name in entity_names:
@@ -97,9 +95,6 @@ def index():
 
                 
             
-            
-            
-
             return render_template('result.html', markup=entity_names, dependencies=dependency_list, text=docs )
     
 
@@ -108,6 +103,21 @@ def show_database():
     deps = Dep.query.all()
     posts = Post.query.all()
     return render_template('database.html', deps=deps, posts=posts)
+
+@app.route('/delete_all', methods=['POST'])
+def delete_post_dep():
+    try:
+        # Deletes all entries from Dep first to avoid foreign key constraint errors
+        db.session.query(Dep).delete()
+        # Then, delete all entries from Post
+        db.session.query(Post).delete()
+        db.session.commit()
+        return jsonify({'message': 'All data from Post and Dep tables deleted successfully!'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error deleting data', 'error': str(e)}), 500
+
+
 
 
 
@@ -119,12 +129,3 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
-"""
-
-curl http://127.0.0.1:5000/
-curl http://127.0.0.1:5000/john
-curl -X POST http://127.0.0.1:5000/john/john@example.com
-curl -X POST http://127.0.0.1:5000/john/hello/world
-curl -X POST http://127.0.0.1:5000/john/byebye/country
-
-"""

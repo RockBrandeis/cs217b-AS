@@ -6,10 +6,16 @@ haochenlin@brandeis.edu
 This is a homework assignment repository base on the forked sample repository.
 New function was added in order fullfill the requirement of assignment while redundant files and folders are removed.(databases folder was saved for assignment2)
 
-Navigate to asssigment1 where the program is running.
+Navigate to asssigment1 where the program is running.(Previous)
 
 ```bash
 $ cd assignment1
+```
+
+Navigate to asssigment2 where the program is running.
+
+```bash
+$ cd assignment2
 ```
 
 Before entering the program, make sure you complete the Installation guide.
@@ -22,7 +28,7 @@ Before entering the program, make sure you complete the Installation guide.
 - Require packges:
 
 ```bash
-$ pip install Fastapi
+$ pip install fastapi
 $ pip install uvicorn
 $ pip install jupyter
 $ pip install spacy
