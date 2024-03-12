@@ -30,7 +30,7 @@
         <tr>
             <td>{{ dep.id }}</td>
             <td>{{ dep.post_name }}</td>
-            <td>{{ dep.dependencies }}</td>
+            <td>{{ dep.dependencies|nl2br|safe }}</td>
         </tr>
         {% endfor %}
     </table>
