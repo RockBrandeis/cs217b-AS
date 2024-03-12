@@ -6,11 +6,20 @@ import ner
 
 app = Flask(__name__)
 
+
+
 app.config['SECRET_KEY'] = 'fc3bb2a43ff1103895a4ee315ee27740'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db_users_posts.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+def htmlnewline(s):
+    if s is None:
+        return ""
+    return s.replace("\n", "<br>")
+
+app.jinja_env.filters['nl2br'] = htmlnewline
 
 
 #Three table was made, but User table deosn't contain any important information, it is reserved for potential future use.
@@ -57,7 +66,7 @@ def index():
             entities = doc.get_entities()
             entity_names = [entity[3] for entity in entities]
 
-            #Enter new entites
+            #Enter new entites, if it already exist, give up
             try:
 
                 for name in entity_names:
@@ -67,55 +76,69 @@ def index():
                 db.session.commit()
 
             except IntegrityError:
-                db.session.rollback()          
+                db.session.rollback()  
 
+            #Intitalize dependency here
             dependencies = doc.get_dependency_parse()
             dependency_list = []
 
             # Check dependencies and match them with correponding entities.
-            for dependency_parse in dependencies:
-                text = dependency_parse['text']
-                
-                matching_posts = Post.query.filter(Post.entity_name.contains(text)).all()
-                
-                for post in matching_posts:
-                    
+            all_posts = Post.query.all()
+
+            for post in all_posts:
+
+                matched_dependencies = []
+
+                for dependency_parse in dependencies:
+                    text = dependency_parse['text']
                     if text in post.entity_name.split():
-
-                            dependency_str = f"{dependency_parse['head_text']} {dependency_parse['dep']} {dependency_parse['text']}"
-                            dependency_list.append(dependency_str)
-                            try:
+                        dependency_str = f"{dependency_parse['head_text']} {dependency_parse['dep']} {dependency_parse['text']}"
                         
-                                new_dep = Dep(dependencies=dependency_str, post_name=post.entity_name)
-                                db.session.add(new_dep)
-                                db.session.commit()
+                        matched_dependencies.append(dependency_str)
+                        
+                        
 
-                            except IntegrityError:
-                                db.session.rollback()
+                dependency_list.append(matched_dependencies)
+                dependencies_str = " \n ".join(matched_dependencies)  
 
+                if dependencies_str:
+                    try:
+                        # Check if a Dep entry already exists for this post, else rollback
+                        existing_dep = Dep.query.filter_by(post_name=post.entity_name).first()
+                        if existing_dep:
+                            existing_dep.dependencies = dependencies_str
+                        else:
+                            # Otherwise, create a new Dep entry
+                            new_dep = Dep(dependencies=dependencies_str, post_name=post.entity_name)
+                            db.session.add(new_dep)
+
+                        db.session.commit()
+                    except IntegrityError:
+                        db.session.rollback() 
                 
             
-            return render_template('result.html', markup=entity_names, dependencies=dependency_list, text=docs )
+            return render_template('result.html', markup=entity_names, dependencies=dependency_list, text=docs)
     
-
+#This for third page which show database
 @app.route('/database')
 def show_database():
     deps = Dep.query.all()
     posts = Post.query.all()
     return render_template('database.html', deps=deps, posts=posts)
 
+
+#This for delete button
 @app.route('/delete_all', methods=['POST'])
 def delete_post_dep():
     try:
-        # Deletes all entries from Dep first to avoid foreign key constraint errors
+        # Deletes everything in database
         db.session.query(Dep).delete()
-        # Then, delete all entries from Post
         db.session.query(Post).delete()
         db.session.commit()
-        return jsonify({'message': 'All data from Post and Dep tables deleted successfully!'}), 200
+        return jsonify({'message': 'All data deleted successfully!'}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Error deleting data', 'error': str(e)}), 500
+        return jsonify({'message': 'Error', 'error': str(e)}), 500
 
 
 
