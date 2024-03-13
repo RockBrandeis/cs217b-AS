@@ -20,7 +20,9 @@ class SpacyDocument:
 
     def get_entities(self) -> str:
         entities = []
+        
         for e in self.doc.ents:
+            
             entities.append((e.start_char, e.end_char, e.label_, e.text))
         return entities
 

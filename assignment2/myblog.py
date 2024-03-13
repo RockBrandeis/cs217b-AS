@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 
 import ner
 
+
 app = Flask(__name__)
 
 
@@ -22,7 +23,7 @@ def htmlnewline(s):
 app.jinja_env.filters['nl2br'] = htmlnewline
 
 
-#Three table was made, but User table deosn't contain any important information, it is reserved for potential future use.
+#Three table was made, but User table doesn't contain any important information, it is reserved for potential future use.
 
 class User(db.Model):
 
@@ -60,10 +61,12 @@ def index():
             return render_template('form.html', input=open('input.txt').read())
         else:
             docs = request.form['text']
-            doc = ner.SpacyDocument(docs)
-            
+            #text = "Apple was founded by Steve Jobs and Steve Wozniak."
+            doc = ner.SpacyDocument(docs)     
                         
             entities = doc.get_entities()
+            print("Submitted Text:", docs)
+            print("Detected Entities:", entities)
             entity_names = [entity[3] for entity in entities]
 
             #Enter new entites, if it already exist, give up
@@ -71,7 +74,9 @@ def index():
 
                 for name in entity_names:
                     new_entity = Post(entity_name=name, user_id=1)
+                    
                     db.session.add(new_entity)
+                    
                 
                 db.session.commit()
 
@@ -96,9 +101,10 @@ def index():
                         
                         matched_dependencies.append(dependency_str)
                         
-                        
+                #Check whether it is Null
+                if matched_dependencies:
+                    dependency_list.append(matched_dependencies)
 
-                dependency_list.append(matched_dependencies)
                 dependencies_str = " \n ".join(matched_dependencies)  
 
                 if dependencies_str:
