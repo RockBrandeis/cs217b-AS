@@ -3,6 +3,8 @@
 Haochen Lin
 haochenlin@brandeis.edu
 
+Please run it in python 3.8 or above
+
 The following pip command is required
 
 ```bash
