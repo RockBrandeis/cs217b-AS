@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Database</title>
+    <script>
+        async function deletePostAndDepData() {
+            if (confirm("Warning! This is gonna delete everything in the database")) {
+                const response = await fetch('/delete_all', { method: 'POST' });
+                const data = await response.json();
+                alert(data.message);
+                
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <title>Database</title>
+    <h2>Database</h2>
+    <button onclick="deletePostAndDepData()">Delete All Posts and Dependencies</button>
+    <h2>Database Entities</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Entities</th>
+            <th>Dependencies Result</th>
+        </tr>
+        {% for dep in deps %}
+        <tr>
+            <td>{{ dep.id }}</td>
+            <td>{{ dep.post_name }}</td>
+            <td>{{ dep.dependencies|nl2br|safe }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h2>Database Post</h2>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Entities name</th>
+            
+        </tr>
+        {% for post in posts %}
+        <tr>
+            <td>{{ post.id }}</td>
+            <td>{{ post.entity_name }}</td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+
+    
+
+
+    <a href="/">Go back to enter new texts</a>
+</body>
+</html>
