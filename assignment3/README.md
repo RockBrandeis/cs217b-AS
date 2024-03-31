@@ -3,14 +3,43 @@
 Haochen Lin
 haochenlin@brandeis.edu
 
-Please run it in python 3.8 or above
+The following was run on a docker file which has pre-built configs
 
-The following pip command is required
+In the assignment3 directory, run the following the build a docker image
 
 ```bash
-$ pip install Flask==3.0.1
-$ pip install Flask-SQLAlchemy==3.1.1
+$ docker build -t solo_blog .
 ```
+
+After successfully build tge image, runs this command to run the image
+```bash
+$ docker run -d -p 8000:8000 -p 5000:5000 -p 8501:8501 solo_blog
+
+```
+
+Then you should be able to acess http://127.0.0.1:8000 http://127.0.0.1:5000/ http://127.0.0.1:8501/ at the same time.
+
+
+Use the following commmands if you want to check the container status
+
+Show the status of all container/running container
+```bash
+docker image
+docker ps
+```
+
+Delete the container
+```bash
+docker rm CONTAINER_ID_OR_NAME
+```
+
+----------
+
+
+The following are the way the run individual files without docker image, and you may not need it.
+
+------------------------------
+
 ### Fast API test
 
 Firstly load the fastapi with the below command
