@@ -1,9 +1,11 @@
-# Assignment 3 - Docker image
+# Assignment 3 - Docker Image
 
 Haochen Lin
 haochenlin@brandeis.edu
 
-The following was run on a docker file which has pre-built configs, before using the below, make sure that you have successfully setup the Docker. You can do this either through VS code Docker plugin (If you're using VS code) or manually download it in the official website. Docker plugin   
+The following was run on a docker file which has pre-built configs, before using the below, make sure that you have successfully setup the Docker. You can do this either through VS code Docker plugin (If you're using VS code) or manually download it in the official website.(https://www.docker.com/get-started/)
+
+Remember to run this under assignment3 directory!!!
 
 In the assignment3 directory, run the following the build a docker image in your terminal.(solo_blog is my image name, change it to anything you like.)
 
@@ -18,19 +20,21 @@ $ docker run -d -p 8000:8000 -p 5000:5000 -p 8501:8501 solo_blog
 ```
 
 Then you should be able to acess http://127.0.0.1:8000 http://127.0.0.1:5000/ http://127.0.0.1:8501/ at the same time.
-
+(In some cases, the website will load slowy, you can solve this by refreshing the page)
 
 Use the following commmands if you want to check the container status
 
-Show the status of all container/running container
+Show the status of all container/running container.(Find docker id here)
 ```bash
 docker image ls
 docker ps
 ```
 
-Delete the container.(Replace CONTAINER_ID_OR_NAME to the actual id or name, you're able to find it through the above command)
+If you don't want to keep the current image, you should stop the running container, and then delete the container and images.(Replace CONTAINER_ID_OR_NAME/IMAGE_NAME to the actual id or name, you're able to find it through the above command) The following commands will do it. 
 ```bash
+docker stop CONTAINER_ID_OR_NAME
 docker rm CONTAINER_ID_OR_NAME
+docker image rm IMAGE_NAME
 ```
 
 ----------
