@@ -3,15 +3,15 @@
 Haochen Lin
 haochenlin@brandeis.edu
 
-The following was run on a docker file which has pre-built configs
+The following was run on a docker file which has pre-built configs, before using the below, make sure that you have successfully setup the Docker. You can do this either through VS code Docker plugin (If you're using VS code) or manually download it in the official website. Docker plugin   
 
-In the assignment3 directory, run the following the build a docker image
+In the assignment3 directory, run the following the build a docker image in your terminal.(solo_blog is my image name, change it to anything you like.)
 
 ```bash
 $ docker build -t solo_blog .
 ```
 
-After successfully build tge image, runs this command to run the image
+After successfully build tge image, runs this command to run the image.
 ```bash
 $ docker run -d -p 8000:8000 -p 5000:5000 -p 8501:8501 solo_blog
 
@@ -24,11 +24,11 @@ Use the following commmands if you want to check the container status
 
 Show the status of all container/running container
 ```bash
-docker image
+docker image ls
 docker ps
 ```
 
-Delete the container
+Delete the container.(Replace CONTAINER_ID_OR_NAME to the actual id or name, you're able to find it through the above command)
 ```bash
 docker rm CONTAINER_ID_OR_NAME
 ```
