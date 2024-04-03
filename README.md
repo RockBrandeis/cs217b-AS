@@ -31,9 +31,11 @@ Before entering the program, make sure you complete the Installation guide.(Not 
 
 # Installation & dependency requirements Guide:
 
-- Make sure you have Python 3.8(or above) installed 
+- Make sure you have Python 3.8(or above) installed .
 
-- Require packges:
+- Make sure you have Docker setup and ready to run.
+
+- Use the following commands to download require packges(For assignment3 only, you won't need the following since those are already downloaded through Dockerfile):
 
 ```bash
 $ pip install fastapi
@@ -49,7 +51,9 @@ $ pip install mypy
 
 # Create a virtual environment in the current directory
 
-For those we're not using Github codespace as virtual environment, you can manually create one(Recommended but optional)
+VS code CodeSpace environment is recommended.
+
+For those who do not using Github codespace as virtual environment, you can manually create one(Recommended but optional)
 ```bash
 $ python3 -m venv venv
 ```
@@ -65,4 +69,4 @@ $ source venv/bin/activate
 
 ------------------------------------------------------------------------
 
-You will see more instruction on the README.md under assignment1 folder
+You will see more instruction on the README.md under the corresponding assignment folder

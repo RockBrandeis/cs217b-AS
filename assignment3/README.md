@@ -13,7 +13,7 @@ In the assignment3 directory, run the following the build a docker image in your
 $ docker build -t solo_blog .
 ```
 
-After successfully build tge image, runs this command to run the image.
+After successfully build tge image, runs this command to run the image through a container.
 ```bash
 $ docker run -d -p 8000:8000 -p 5000:5000 -p 8501:8501 solo_blog
 
@@ -40,7 +40,7 @@ docker image rm IMAGE_NAME
 ----------
 
 
-The following are the way the run individual files without docker image, and you may not need it.
+The following are the way the run individual files without docker image, and you may not need it. Nevertheless, you can learn how to use the three web that docker contained through the following.
 
 ------------------------------
 
@@ -100,4 +100,7 @@ If not, manually enter http://127.0.0.1:8501/ in your browser
 ```bash
 $ streamlit run app_streamlit.py
 ```
+
+In this website, you should be view the graph and text details of dependency and entities which split into two tabs.
+
 You can use Ctrl + c to quit. 
